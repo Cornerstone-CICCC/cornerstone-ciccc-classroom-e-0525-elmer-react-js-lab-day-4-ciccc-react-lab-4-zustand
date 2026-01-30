@@ -1,4 +1,5 @@
-import { FormEvent, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+import type { FormEvent } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import toast from "react-hot-toast";
 import { usePostStore } from "../stores/post.store";

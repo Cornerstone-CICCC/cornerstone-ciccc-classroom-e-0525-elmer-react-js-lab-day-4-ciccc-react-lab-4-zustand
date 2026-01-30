@@ -1,11 +1,18 @@
+import { useMemo } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { usePostStore } from "../stores/post.store";
 
 export default function PostsList() {
   const navigate = useNavigate();
 
-  // Solo NO eliminados
-  const posts = usePostStore((s) => s.posts.filter((p) => !p.isDeleted));
+  // 1) Trae el array "crudo"
+  const allPosts = usePostStore((s) => s.posts);
+
+  // 2) Filtra con useMemo (evita array nuevo en cada render)
+  const posts = useMemo(
+    () => allPosts.filter((p) => !p.isDeleted),
+    [allPosts]
+  );
 
   return (
     <div className="space-y-4">

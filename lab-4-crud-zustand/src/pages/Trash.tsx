@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import toast from "react-hot-toast";
 import { Link, useNavigate } from "react-router-dom";
 import { usePostStore } from "../stores/post.store";
@@ -5,9 +6,11 @@ import { usePostStore } from "../stores/post.store";
 export default function Trash() {
   const navigate = useNavigate();
 
-  const trashed = usePostStore((s) => s.posts.filter((p) => p.isDeleted));
+  const allPosts = usePostStore((s) => s.posts);
   const recoverPost = usePostStore((s) => s.recoverPost);
   const deletePermanently = usePostStore((s) => s.deletePermanently);
+
+  const trashed = useMemo(() => allPosts.filter((p) => p.isDeleted), [allPosts]);
 
   const onRecover = (id: string) => {
     recoverPost(id);
@@ -45,7 +48,7 @@ export default function Trash() {
                 className="text-left w-full"
               >
                 <div className="font-semibold">{p.title}</div>
-                <div className="text-sm text-gray-600 mt-1 line-clamp-2">
+                <div className="text-sm text-gray-600 mt-1 overflow-hidden text-ellipsis whitespace-nowrap">
                   {p.content}
                 </div>
                 <div className="mt-2 text-xs text-gray-400">ID: {p.id}</div>
